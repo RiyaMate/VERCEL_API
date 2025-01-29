@@ -1,9 +1,9 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
 from typing import Dict
+from mangum import Mangum  # <-- Important for Vercel/Serverless
 import os
 
-# Create FastAPI instance
 app = FastAPI(
     title="Lab Demo API",
     description="Simple FastAPI application with health check"
@@ -51,12 +51,11 @@ async def upload_pdf(file: UploadFile = File(...)) -> Dict[str, str]:
 
     Returns metadata about the uploaded file.
     """
-    # Here, you can add logic to process the PDF file as needed.
-    # e.g., saving it to disk, extracting text, storing in a database, etc.
-
-    # For demonstration, we'll just return its metadata.
     return {
         "filename": file.filename,
         "content_type": file.content_type,
         "message": "PDF uploaded successfully!"
     }
+
+# This is crucial for serverless environments like Vercel
+handler = Mangum(app)
