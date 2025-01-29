@@ -43,3 +43,20 @@ async def get_demo_env() -> Dict[str, str]:
     """
     demo_value = os.getenv("DEMO_VALUE", "default_value")
     return {"env_variable": "DEMO_VALUE", "value": demo_value}
+
+@app.post("/upload-pdf")
+async def upload_pdf(file: UploadFile = File(...)) -> Dict[str, str]:
+    """
+    Endpoint to upload a PDF file.
+
+    Returns metadata about the uploaded file.
+    """
+    # Here, you can add logic to process the PDF file as needed.
+    # e.g., saving it to disk, extracting text, storing in a database, etc.
+
+    # For demonstration, we'll just return its metadata.
+    return {
+        "filename": file.filename,
+        "content_type": file.content_type,
+        "message": "PDF uploaded successfully!"
+    }
